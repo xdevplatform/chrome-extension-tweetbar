@@ -19,7 +19,7 @@ var Settings = {
 			'embedType', 'embedTemplate', 'embedTheme', 'embedShowMedia',
 			'embedShowConversation', 'embedIncludeScriptTag' ],
 			
-	properties : null,
+	properties : {},
 			
 	init : function(success, failure) {
 		
@@ -174,6 +174,10 @@ var Twitter = {
 				result = TweetStore.accountVerifyCredentials;
 			}
 
+			if (endpoint == 'search_tweets'){
+				result = TweetStore.searchTweets;
+			}
+
 			if (endpoint == 'statuses_oembed'){
 				result = TweetStore.statusesOembed;
 			}
@@ -182,6 +186,33 @@ var Twitter = {
 			return;
 			
 		}
+		
+	},
+	
+	search : function(term, callback) {
+		
+		var params = {
+			q : term
+		}
+		
+		Twitter.call("search_tweets", params, function(result) {
+
+			var ids = [];
+			
+			async.eachSeries(result.statuses, function(status, done){
+				
+				ids.push(status.id_str);
+				
+				done();
+				
+			}, function(err){
+				
+				console.log("search results: " + ids);
+				callback(ids);
+				
+			});
+			
+		});
 		
 	},
 
@@ -210,21 +241,7 @@ var Twitter = {
 				contentAll = contentAll + Twitter.NEWLINE + Twitter.SCRIPT_TAG;
 			}
 			
-			var request = {
-				type : "contentscript.insertTextAtPosition",
-				content : contentAll
-			};
-			
-			chrome.tabs.query({
-				active : true,
-				currentWindow : true
-			}, function(tabs) {
-				chrome.tabs.sendMessage(tabs[0].id, request, function(el) {
-					if (callback){
-						callback(contentAll);
-					}
-				});
-			});
+			callback(contentAll);
 			
 		});
 		
@@ -311,6 +328,8 @@ var URL = {
 	TWITTER_AUTH_LOGOUT : "http://twitter.com/logout",
 
 	TWITTER_STATUS : 'https://twitter.com/intent/tweet?text=',
+	
+	YOUTUBE_WATCH : "www.youtube.com/watch",
 
 	make : function(page, params) {
 		if (!params){
@@ -380,7 +399,7 @@ Settings.DEFAULT = {
 	 'authState' : Settings.AUTH_STATE_LOGIN, 
 	 'embedType' : 'embed',
 	 'embedTheme' : 'light',
-	 'embedShowMedia' : true,
+	 'embedShowMedia' : false,
 	 'embedShowConversation' : false,
 	 'embedIncludeScriptTag' : true
 }

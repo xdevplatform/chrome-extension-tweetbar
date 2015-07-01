@@ -112,24 +112,48 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 });
 
-chrome.webNavigation.onCompleted.addListener(function(details) {
-	console.log('loaded page: ' + details.url);
+var IDS = ["614471463219781632", "614462143199473664"];
+
+chrome.webRequest.onCompleted.addListener(function(details) {
 	
-	function openSidebar(tabId, url, callback){
+	// console.log('webRequest: ' + details.url);
+	
+	function showTweets(tabId, content, targetId, callback){
 		chrome.tabs.sendMessage(
 				//Selected tab id
 				tabId,
 				//Params inside a object data
-				{action: "openSidebar", url: url}, 
+				{action: "showTweets", content: content, targetId: targetId}, 
 				//Optional callback function
 				callback
 			);
 	}
 	
-	openSidebar(details.tabId, details.url, function(response) { 
-		console.log(response);
-	});
-});	
+	if (details.url.indexOf(URL.YOUTUBE_WATCH) > 0){
+
+		console.log('youtube page: ' + details.url);
+		var qsStart = details.url.indexOf("?");
+		var qs = QueryString.parse(details.url.substring(qsStart + 1));
+
+		var token = qs['v'];
+		if (token){
+			Twitter.search(token, function(ids){
+			
+				Twitter.embedTweets(ids, function(content){
+					
+					showTweets(details.tabId, content, "watch7-sidebar", function(response) { 
+						console.log(response);
+					});
+	
+				});
+			});
+		}
+		
+	}
+	
+},
+{urls: ["<all_urls>"]},
+["responseHeaders"]);	
 
 function init(){
 	Settings.init(function(){

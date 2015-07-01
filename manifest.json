@@ -7,8 +7,7 @@
 
   "permissions": [
 	"tabs",
-	"webNavigation",
-    "contextMenus",
+	"webRequest",
     "storage",
     "http://*/*",
     "https://*/*"
@@ -33,7 +32,7 @@
 	    "js/store.js",
 	    "js/background.js"
   	],
-    "persistent": false
+    "persistent": true
   },
 
   "content_scripts": [
