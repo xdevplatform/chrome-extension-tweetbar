@@ -290,6 +290,28 @@ function init(){
 	}, function() {
 		URL.open("settings");
 	});
+
 }
+
+var sidebarOpen = false;
+
+function openSidebar(tabId, url, callback){
+	chrome.tabs.sendMessage(
+			//Selected tab id
+			tabId,
+			//Params inside a object data
+			{action: "openSidebar", url: url}, 
+			//Optional callback function
+			callback
+		);
+}
+
+chrome.webNavigation.onCompleted.addListener(function(details) {
+	console.log('loaded page: ' + details.url);
+	
+	openSidebar(details.tabId, details.url, function(response) { 
+		console.log(response);
+	});
+});	
 
 init();
