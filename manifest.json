@@ -1,0 +1,58 @@
+{
+  "manifest_version": 2,
+  "name": "TwitterDev Tweetbar v0.0.2",
+  "description": "Chrome extension to show relevant tweets while browsing the we",
+  "version": "0.0.2",
+  "options_page": "page.html?page=settings",
+
+  "permissions": [
+	"tabs",
+	"webNavigation",
+    "contextMenus",
+    "storage",
+    "http://*/*",
+    "https://*/*"
+  ],
+
+	"page_action": {
+		"default_icon": "img/icon.png",
+		"default_title": "Tweetbar"
+	},
+
+  "icons": { "16": "img/bird.png",
+             "48": "img/bird.png",
+             "128": "img/bird.png" },
+
+  "background": {
+  	"scripts": [
+	    "js/lib/jquery-1.10.1.min.js",
+	    "js/lib/bootstrap.js",
+	    "js/lib/async.js",
+	    "js/lib/codebird.js",
+	    "js/common.js",
+	    "js/store.js",
+	    "js/menu.js",
+	    "js/background.js"
+  	],
+    "persistent": false
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "all_frames": true,
+      "run_at": "document_idle", 
+      "js": [
+      	"js/lib/jquery-1.10.1.min.js",
+	    "js/lib/async.js",
+      	"js/common.js", 
+      	"js/contentscript.js"
+  	  ],
+      "css": [
+      	"css/contentscript.css"
+  	  ]
+    }
+  ],
+  
+  "web_accessible_resources": ["page.html"]
+}
