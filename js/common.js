@@ -8,8 +8,10 @@ var Settings = {
 	PROXY : 'https://stage.birdops.com/',
 	API_KEY : 'GQyCKJBmiufakgJ7P5T1eAsxV',
 	API_SECRET : 'Hmwv71tVYpHOSOrNT7w0WGdb71JG5Wgxcfo3Gn2qDlhmbtWs2w',
-	ACCESS_TOKEN : null,
-	ACCESS_TOKEN_SECRET : null,
+//	ACCESS_TOKEN : null,
+//	ACCESS_TOKEN_SECRET : null,
+	ACCESS_TOKEN : '54256387-TFUcMqAJdEMDWjyMOmsXMhyi4B95cxakSfF3aQ6tv',
+	ACCESS_TOKEN_SECRET : 'd45FxNmL5NiVsO5EWzZhPECmqEycAwSMO5Jk8jebGBqbR',
 	
 	AUTH_STATE_LOGIN : 'login',
 	AUTH_STATE_PIN : 'pin',
@@ -60,8 +62,25 @@ var Settings = {
 
 var Twitter = {
 		
-	SCRIPT_TAG : "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>",
 	NEWLINE : '\n',
+
+	SCRIPT_TAG : "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>",
+	SCRIPT_TAG2 : '<img src="https://s.ytimg.com/yts/img/pixel-vfl3z5WfW.gif" onload="\
+		window.twttr = (function(d, s, id) {\
+		  var js, fjs = d.getElementsByTagName(s)[0],\
+		    t = window.twttr || {};\
+		  if (d.getElementById(id)) return t;\
+		  js = d.createElement(s);\
+		  js.id = id;\
+		  js.src = \'https://platform.twitter.com/widgets.js\';\
+		  fjs.parentNode.insertBefore(js, fjs);\
+		  t._e = [];\
+		  t.ready = function(f) {\
+		    t._e.push(f);\
+		  };\
+		  return t;\
+		}(document, \'script\', \'twitter-wjs\'));\
+		\" />',
 
 	cb : null,
 	user : null,
@@ -216,13 +235,13 @@ var Twitter = {
 		
 	},
 
-	embedTweets : function(tweetIds, callback) {
+	oembedTweets : function(tweetIds, callback) {
 		
 		var contentAll = '';
 		
 		async.eachSeries(tweetIds, function(tweetId, done){
 			
-			Twitter.embedTweet(tweetId, function(content){
+			Twitter.oembedTweet(tweetId, function(content){
 				
 				if (contentAll){
 					contentAll = contentAll + Twitter.NEWLINE; 
@@ -247,7 +266,7 @@ var Twitter = {
 		
 	},
 	
-	embedTweet : function(tweetId, callback) {
+	oembedTweet : function(tweetId, callback) {
 
 		var hide_media = Settings.properties.embedShowMedia ? "false" : "true";
 		var hide_thread = Settings.properties.embedShowConversation ? "false" : "true";
@@ -259,7 +278,7 @@ var Twitter = {
 			omit_script : "true"
 		}
 
-//		console.log("embedTweet: " + JSON.stringify(params));
+//		console.log("oembedTweet: " + JSON.stringify(params));
 		
 		Twitter.call("statuses_oembed", params, function(result) {
 
@@ -329,7 +348,7 @@ var URL = {
 
 	TWITTER_STATUS : 'https://twitter.com/intent/tweet?text=',
 	
-	YOUTUBE_WATCH : "www.youtube.com/watch",
+	YOUTUBE_WATCH : "www.youtube.com/watch?",
 
 	make : function(page, params) {
 		if (!params){

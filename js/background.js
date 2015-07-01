@@ -85,51 +85,24 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 	}
 
-	if (type == "background.loadTweets") {
-
-		var collectionId = request.id;
-		Twitter.call("timelines_timeline", {
-			id : collectionId
-		}, function(response) {
-			sendResponse(response);
-		});
-
-		// allow async callback of sendResponse()
-		return true;
-
-	}
-	
-	if (type == "background.embedTweets") {
-		var tweetIds = request.ids;
-		Twitter.embedTweets(tweetIds, function(content){
-			sendResponse({content: content});
-		});
-		
-		// allow async callback of sendResponse()
-		return true;
-
-	}
-
 });
-
-var IDS = ["614471463219781632", "614462143199473664"];
 
 chrome.webRequest.onCompleted.addListener(function(details) {
 	
-	// console.log('webRequest: ' + details.url);
-	
 	function showTweets(tabId, content, targetId, callback){
 		chrome.tabs.sendMessage(
-				//Selected tab id
-				tabId,
-				//Params inside a object data
-				{action: "showTweets", content: content, targetId: targetId}, 
-				//Optional callback function
-				callback
-			);
+			//Selected tab id
+			tabId,
+			//Params inside a object data
+			{action: "showTweets", content: content, targetId: targetId}, 
+			//Optional callback function
+			callback
+		);
+		
+		console.log('showTweets: ('+(new Date()).getTime()+')');
 	}
 	
-	if (details.url.indexOf(URL.YOUTUBE_WATCH) > 0){
+	if (details.url.indexOf(URL.YOUTUBE_WATCH) != -1){
 
 		console.log('youtube page: ' + details.url);
 		var qsStart = details.url.indexOf("?");
@@ -139,11 +112,13 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 		if (token){
 			Twitter.search(token, function(ids){
 			
-				Twitter.embedTweets(ids, function(content){
+				Twitter.oembedTweets(ids, function(content){
 					
-					showTweets(details.tabId, content, "watch7-sidebar", function(response) { 
-						console.log(response);
-					});
+					setTimeout(function(){
+						showTweets(details.tabId, content, null, function(response) { 
+							console.log(response);
+						});
+					}, 3000);
 	
 				});
 			});

@@ -14,37 +14,27 @@ var Sidebar = {
 	},
 		
 	open : function(request) {
-//		if (!this.isOpen){
-//			this.isOpen = true;
 			
-			// create new sidebar
-//			var sidebar = document.createElement('div');
-//			sidebar.id = "mySidebar";
+		// create new sidebar
+		var sidebar = document.createElement('div');
+		sidebar.id = "mySidebar";
+		document.body.appendChild(sidebar);
 			
-			// use existing sidebar
-			sidebar = document.getElementById('watch7-sidebar');
-			console.log("sidebar: " + sidebar)
+		sidebar.style.cssText = "\
+//			position:fixed;\
+			top:50px;\
+			right:0px;\
+			width:30%;\
+			height:100%;\
+			padding:8px;\
+			background:white;\
+			z-index:999999;\
+		";
+		
+		// use existing sidebar
+//		sidebar = document.getElementById('watch7-sidebar');
+//		console.log("sidebar: " + sidebar)
 			
-//			sidebar.innerHTML = '\
-//				<blockquote class="twitter-tweet" lang="en" cards="hidden"><p lang="en" dir="ltr">Well... He just did it... Shia LaBeouf Freestyle Rapping <a href="http://t.co/l67jnbWLOh">http://t.co/l67jnbWLOh</a></p>&mdash; Blake Brooks (@fakeblakebrooks) <a href="https://twitter.com/fakeblakebrooks/status/615728556673359872">June 30, 2015</a></blockquote>\
-//				<blockquote class="twitter-tweet" lang="en" cards="hidden"><p lang="en" dir="ltr">Yoooo tryna get Shia on the next album thooooo <a href="http://t.co/wZWHKrVEVD">http://t.co/wZWHKrVEVD</a> <a href="https://twitter.com/hashtag/GalaxyBoi?src=hash">#GalaxyBoi</a></p>&mdash; Galaxykat (@galaxykatmusic) <a href="https://twitter.com/galaxykatmusic/status/615723897682571264">June 30, 2015</a></blockquote>\
-//				<script language="JavaScript1.2">twttr.widgets.load()</script>\
-//				\
-//		';
-//			sidebar.style.cssText = "\
-//				position:fixed;\
-//				top:50px;\
-//				right:0px;\
-//				width:30%;\
-//				height:100%;\
-//				padding:8px;\
-//				background:white;\
-//				z-index:999999;\
-//			";
-
-			// document.body.appendChild(sidebar);
-			
-//		}
 		return sidebar;
 	},
 	
@@ -66,29 +56,32 @@ var Sidebar = {
 //prevent IFRAMES from loading this listener multiple times.
 if (!window.top.listenerLoaded) {
 	
+	console.log('listener loading');
+	
 	window.top.listenerLoaded = true;
 
 	Sidebar.init();
 	
 	chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
-		console.log(request.action)
+		
+		console.log('onMessage: ' + request.action)
+		
 		if (request.action == "showTweets") {
 			var tweets = request.content; 
 			
-			console.log(tweets);
+//			var html = tweets + Twitter.SCRIPT_TAG;
+			var html = tweets + Twitter.SCRIPT_TAG2;
 			
 			var sidebar = Sidebar.open(request);
 			console.log(sidebar);
 			
-			sidebar.innerHTML = tweets;
+			sidebar.innerHTML = html;
+			console.log(html);
 
 		}
 	});
 	
-	console.log('contentscript.js: loaded');
+	console.log('contentscript.js: loaded ('+(new Date()).getTime()+')');
 
 }
 
-
-
-console.log('loaded script.js')
