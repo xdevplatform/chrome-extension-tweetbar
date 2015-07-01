@@ -17,7 +17,7 @@ var Settings = {
 		
 	PROPERTIES : [ 'apiKey', 'apiSecret', 'accessToken', 'accessTokenSecret', 'authState',
 			'embedType', 'embedTemplate', 'embedTheme', 'embedShowMedia',
-			'embedShowConversation', 'embedIncludeScriptTag', 'lastUsedCollectionId' ],
+			'embedShowConversation', 'embedIncludeScriptTag' ],
 			
 	properties : null,
 			
@@ -178,18 +178,6 @@ var Twitter = {
 				result = TweetStore.statusesOembed;
 			}
 			
-			if (endpoint == 'collections_list'){
-				result = TweetStore.collectionsList;
-			}
-			
-			if (endpoint == 'timelines_timeline'){
-				result = TweetStore.timelinesTimeline;
-			}
-
-			if (endpoint == 'collections_remove'){
-				result = {};
-			}
-
 			callback(result);
 			return;
 			
@@ -197,36 +185,6 @@ var Twitter = {
 		
 	},
 
-	saveTweetsToCollection : function(collectionId, tweetIds, callback) {
-
-		async.eachSeries(tweetIds, function(tweetId, callback){
-			Twitter.call("collections_add", {
-				id : collectionId,
-				tweet_id: tweetId
-			}, function(response) {
-				callback(null);
-			});
-		}, function(err){
-			callback(err);
-		});
-		
-	},
-	
-	removeTweetsFromCollection : function(collectionId, tweetIds, callback) {
-
-		async.eachSeries(tweetIds, function(tweetId, callback){
-			Twitter.call("collections_remove", {
-				id : collectionId,
-				tweet_id: tweetId
-			}, function(response) {
-				callback(null);
-			});
-		}, function(err){
-			callback(err);
-		});
-		
-	},
-	
 	embedTweets : function(tweetIds, callback) {
 		
 		var contentAll = '';
