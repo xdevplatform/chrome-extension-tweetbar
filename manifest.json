@@ -31,7 +31,6 @@
 	    "js/lib/codebird.js",
 	    "js/common.js",
 	    "js/store.js",
-	    "js/menu.js",
 	    "js/background.js"
   	],
     "persistent": false

@@ -4,186 +4,59 @@
  * menu items are initialized in background.js
  */
 
-var Collections = {
-
-	TWEET_ACTION : "<div class='ProfileTweet-action ProfileTweet-action--collection js-toggleState' data-url='%URL%'>" +
-		"<span class='ProfileTweet-actionButton' style='font-weight:bold; font-size: 1.8em; margin-top:-.2em;' onmouseover='this.style.color=\"#3B94D9\";' onmouseout='this.style.color=\"#ccd6dd\";');return false;'>&plus;</span>" +
-		"</div>",
+var Sidebar = {
 		
-	MODAL : "<div id='collectionModal'><div id='dialog'>" +
-		"<div id='header'><h3 id='headerText'>Add Tweet to Collection</h3></div>" +
-		"<div id='contents'><p>Add this tweet to:</p>" +
-		" <div id='collectionModalList'>" +
-		" </div>" +
-		"</div>" +
-		"<div id='footer'> " +
-		" <a href='#' class='pull-left' id='collectionModalNew'>Create New Collection</a> " +
-		" <a href='#' class='btn primary-btn pull-right' id='collectionModalSave'>Save</a> " +
-		" <a href='#' class='btn pull-right' id='collectionModalCancel'>Cancel</a> " +
-		"</div> " +
-		"</div></div>",
-		
+	isOpen: false,
+	
 	init : function(){
-
-		// add collection modal 
-		$(document.body).append(Collections.MODAL);
-		
-		// immediately hide collection modal & batch save button
-		Collections.hideModal();
-		
-		// collection modal: enable single save
-		$("#collectionModal").on("click", ".collectionModalListItem", function(){
-			var tweetId = $(this).data("tweet-id");
-			var collectionId = $(this).data("collection-id");
-			Collections.saveTweetToCollections(tweetId, [collectionId]);
-			return false;
-		});	
-		
-		// collection modal: enable bulk select
-		$("#collectionModal").on("click", ".collectionModalListItemCheckbox", function(){
-			var collectionIds = Collections.getSelected();
-			if (collectionIds.length > 0){
-				$("#collectionModalSave").show();
-			} else {
-				$("#collectionModalSave").hide();
-			}
-		});	
-
-		// collection modal: enable bulk save
-		$("#collectionModal").on("click", "#collectionModalSave", function(){
-			var tweetId = $(this).data("tweet-id");
-			var collectionIds = Collections.getSelected();
-			if (collectionIds.length > 0){
-				Collections.saveTweetToCollections(tweetId, collectionIds);
-			}
-			return false;
-		});
-		
-		// collection modal: enable cancel
-		$("#collectionModal").on("click", "#collectionModalCancel", function(){
-			Collections.hideModal();
-			return false;
-		});
-
-		// collection modal: enable new (link in new window)
-		$("#collectionModal").on("click", "#collectionModalNew", function(){
-			var url = $(this).data('url');
-			url = URL.make("save", {url : url});
-			window.open(url, '_target');
-			Collections.hideModal();
-			return false;
-		});
-		
-		// add icon to each tweet 
-		Collections.injectAddins();
 		
 	},
-	
-	getSelected : function(){
-		var collectionIds = [];
-		$(".collectionModalListItemCheckbox").each(function(){
-			if ($(this).prop('checked')){
-				collectionIds[collectionIds.length] = $(this).data("collection-id");
-			}
-		});
-		return collectionIds;
-	},
-	
-	saveTweetToCollections : function(tweetId, collectionIds){
 		
-		async.each(collectionIds, function(collectionId, callback){
-			var request = {
-				type: "background.saveTweetsToCollection",
-				collectionId : collectionId,
-				ids : [tweetId]
-			};
-			chrome.runtime.sendMessage(request, function(response){
-				callback(null);
-			});
-		}, function(err){
-
-			$("#contents").hide();
-			$("#footer").hide();
-			$("#headerText").html("Saved to Collections.");
-
-			setTimeout(function() {
-				$("#collectionModal").fadeOut();
-			}, 1000 /* Settings.UI_TIMEOUT */);
-
-		});
-
-	},
-	
-	showModal : function(tweetId, tweetUrl) {
-		
-		$("#header").show();
-		$("#contents").show();
-		$("#footer").show();
-		$("#headerText").html("Add Tweet to Collection");
-		$("#collectionModalList").html("<center><div class='spinner'></div></center>");
-		$("#collectionModalSave").hide();
-		$("#collectionModal").show();
-
-		chrome.runtime.sendMessage({type: "background.loadCollections"},
-		  function(response) {
+	open : function(params) {
+		if (!this.isOpen){
+			this.isOpen = true;
 			
-			var htmlList = "";
+			// create new sidebar
+//			var sidebar = document.createElement('div');
+//			sidebar.id = "mySidebar";
 			
-			if (response && response.response && response.response.results){
-				for (var i = 0; i < response.response.results.length; i++){
-					var collectionId = response.response.results[i].timeline_id;
-					var collection = response.objects.timelines[collectionId];
-					var html = "<li><input type='checkbox' class='collectionModalListItemCheckbox' data-tweet-id='"+tweetId+"' data-collection-id='"+collectionId+"'></input> &nbsp;<a class='collectionModalListItem' data-tweet-id='"+tweetId+"' data-collection-id='"+collectionId+"'>" + collection.name + "</a></li>";
-					htmlList = htmlList + html;
-				}
-			}
-			htmlList = "<ul>" + htmlList + "</ul>";
-			$("#collectionModalList").html(htmlList);
-			$("#collectionModalNew").data("url", tweetUrl);
-			$("#collectionModalSave").data("tweet-id", tweetId);
-			$("#footer").show();
+			// use existing sidebar
+			var sidebar = document.getElementById('watch7-sidebar');
+			
+			sidebar.innerHTML = '\
+				<blockquote class="twitter-tweet" lang="en" cards="hidden"><p lang="en" dir="ltr">Well... He just did it... Shia LaBeouf Freestyle Rapping <a href="http://t.co/l67jnbWLOh">http://t.co/l67jnbWLOh</a></p>&mdash; Blake Brooks (@fakeblakebrooks) <a href="https://twitter.com/fakeblakebrooks/status/615728556673359872">June 30, 2015</a></blockquote>\
+				<blockquote class="twitter-tweet" lang="en" cards="hidden"><p lang="en" dir="ltr">Yoooo tryna get Shia on the next album thooooo <a href="http://t.co/wZWHKrVEVD">http://t.co/wZWHKrVEVD</a> <a href="https://twitter.com/hashtag/GalaxyBoi?src=hash">#GalaxyBoi</a></p>&mdash; Galaxykat (@galaxykatmusic) <a href="https://twitter.com/galaxykatmusic/status/615723897682571264">June 30, 2015</a></blockquote>\
+				<script language="JavaScript1.2">twttr.widgets.load()</script>\
+				\
+		';
+//			sidebar.style.cssText = "\
+//				position:fixed;\
+//				top:50px;\
+//				right:0px;\
+//				width:30%;\
+//				height:100%;\
+//				padding:8px;\
+//				background:white;\
+//				z-index:999999;\
+//			";
 
-		});
+			// document.body.appendChild(sidebar);
+		}
 	},
 	
-	hideModal : function(){
-		$("#collectionModal").hide();
-	},
-
-	injectCollectionAction : function(){
-		
-		// insert collection icon for every tweet
-		$(".tweet, .js-tweet").each(function(){
-
-			var tweetId = $(this).data("tweet-id");
-			var existingCollectionAction = $(this).find(".ProfileTweet-action--collection");
-			
-			// only add once
-			if (!existingCollectionAction || existingCollectionAction.length == 0){
-				var href = $(this).find(".js-permalink").attr("href");
-				var url = "http://twitter.com" + href;
-				
-				var lastAction = $(this).find(".ProfileTweet-actionList div.ProfileTweet-action:last-child");
-				lastAction.before(Collections.TWEET_ACTION.replace('%URL%', url));
-				
-				$(this).on("click", ".ProfileTweet-action--collection", function(){
-					Collections.showModal(tweetId, url);
-					return false;
-				});	
-			}
-
-		});
-		
+	close : function(params) {
+		var el = document.getElementById('mySidebar');
+		el.parentNode.removeChild(el);
+		this.isOpen = false;
 	},
 	
-	injectAddins : function(){
-		
-		setInterval(function(){
-			Collections.injectCollectionAction();
-		}, 2000);
-
-	},
-		
+	toggle : function(params) {
+		if (this.isOpen) {
+			this.close(params);
+		} else {
+			this.open(params);
+		}
+	}
 }
 
 var HTML = {
@@ -331,7 +204,7 @@ if (!window.top.listenerLoaded) {
 		
 	});
 	
-	Collections.init();
+	Sidebar.init();
 	
 	console.log('contentscript.js: loaded');
 
@@ -355,60 +228,13 @@ function handleRequest(
 	) {
 	console.log(params.action + " " + params.url)
 	if (params.action == "toggleSidebar")
-		toggleSidebar(params);
+		Sidebar.toggle(params);
 	if (params.action == "openSidebar")
-		openSidebar(params);
+		Sidebar.open(params);
 	if (params.action == "closeSidebar")
-		closeSidebar(params);
+		Sidebar.close(params);
 }
 chrome.extension.onMessage.addListener(handleRequest);
-
-var sidebarOpen = false;
-function toggleSidebar() {
-	if (sidebarOpen) {
-		closeSidebar();
-	} else {
-		openSidebar();
-	}
-}
-
-function closeSidebar(){
-	var el = document.getElementById('mySidebar');
-	el.parentNode.removeChild(el);
-	sidebarOpen = false;
-}
-
-function openSidebar(url){
-	if (!sidebarOpen){
-		sidebarOpen = true;
-		
-		// create new sidebar
-//		var sidebar = document.createElement('div');
-//		sidebar.id = "mySidebar";
-		
-		// use existing sidebar
-		var sidebar = document.getElementById('watch7-sidebar');
-		
-		sidebar.innerHTML = '\
-			<blockquote class="twitter-tweet" lang="en" cards="hidden"><p lang="en" dir="ltr">Well... He just did it... Shia LaBeouf Freestyle Rapping <a href="http://t.co/l67jnbWLOh">http://t.co/l67jnbWLOh</a></p>&mdash; Blake Brooks (@fakeblakebrooks) <a href="https://twitter.com/fakeblakebrooks/status/615728556673359872">June 30, 2015</a></blockquote>\
-			<blockquote class="twitter-tweet" lang="en" cards="hidden"><p lang="en" dir="ltr">Yoooo tryna get Shia on the next album thooooo <a href="http://t.co/wZWHKrVEVD">http://t.co/wZWHKrVEVD</a> <a href="https://twitter.com/hashtag/GalaxyBoi?src=hash">#GalaxyBoi</a></p>&mdash; Galaxykat (@galaxykatmusic) <a href="https://twitter.com/galaxykatmusic/status/615723897682571264">June 30, 2015</a></blockquote>\
-			<script language="JavaScript1.2">twttr.widgets.load()</script>\
-			\
-	';
-//		sidebar.style.cssText = "\
-//			position:fixed;\
-//			top:50px;\
-//			right:0px;\
-//			width:30%;\
-//			height:100%;\
-//			padding:8px;\
-//			background:white;\
-//			z-index:999999;\
-//		";
-
-		// document.body.appendChild(sidebar);
-	}
-}
 
 var QueryString = {
 
