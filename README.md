@@ -1,9 +1,11 @@
-TwitterDev Tweetbar Extension v0.1
+TwitterDev Tweetbar Chrome Extension v0.1
 =====
 
 Chrome extension to view tweets while browsing YouTube. 
 
-This tool is made open source by the @TwitterDev team as a reference for how to integrate Twitter + Chrome browser for a unique user experience. 
+<img src="screenshot.png" style="width: 70%;"/>
+
+This tool is made open source by the @TwitterDev team as a reference for how to integrate Twitter + a Chrome browser for a unique user experience. 
 
 Installation
 --------
@@ -16,19 +18,13 @@ To open settings, either use the tool bar under 'Chrome->Preferences', or click 
 
 <img src="img/screen/install_step1.png" style="width: 70%;"/>
 
-##### Step 2: Drag and drop the pubtools.crx file into the Extensions Page.
+##### Step 2: Load the unpacked extension
 
-You will see a drop target appear that says "Drop to install". 
-
-<img src="img/screen/install_step3a.png" style="width: 70%;"/>
-
-After you drop, click on the "Add" button in the prompt.
-
-<img src="img/screen/install_step3b.png" style="width: 70%;"/>
+At the top of the page, click on the 'Load unpacked extension...' button and choos the folder containing the code.
 
 After installation, a browser window will also pop-up with the extension's settings page. If it does not, follow Step 3 below to open the extension's settings window manually.
 
-##### Step 3: Find "TwitterDev Collections Extension v0.0.2" in the Extensions list and click  "Options".
+##### Step 3: Find "TwitterDev Tweetbar" in the Extensions list and click  "Options".
 
 This will take you to the Extension's own settings page. (Different from your browser's settings.)
 
