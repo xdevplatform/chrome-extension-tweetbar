@@ -10,29 +10,28 @@ if (chrome.runtime.onInstalled) {
 		Settings.save(Settings.DEFAULT);
 	});
 
-};
-
-// Put page action icon on all tabs
-chrome.tabs.onUpdated.addListener(function(tabId) {
-	chrome.pageAction.show(tabId);
-});
-
-chrome.tabs.getSelected(null, function(tab) {
-	chrome.pageAction.show(tab.id);
-});
-
-// Send request to current tab when page action is clicked
-chrome.pageAction.onClicked.addListener(function(tab) {
-	chrome.tabs.getSelected(null, function(tab) {
-		chrome.tabs.sendMessage(
-			tab.id,
-			{action: "toggleSidebar"}, 
-			function(response) {
-				console.log(response);
-			}
-		);
+	// Put page action icon on all tabs
+	chrome.tabs.onUpdated.addListener(function(tabId) {
+		chrome.pageAction.show(tabId);
 	});
-});
+
+	chrome.tabs.getSelected(null, function(tab) {
+		chrome.pageAction.show(tab.id);
+	});
+
+	// Send request to current tab when page action is clicked
+	chrome.pageAction.onClicked.addListener(function(tab) {
+		chrome.tabs.getSelected(null, function(tab) {
+			chrome.tabs.sendMessage(
+				tab.id,
+				{action: "toggleSidebar"}, 
+				function(response) {
+					console.log(response);
+				}
+			);
+		});
+	});
+};
 
 // Because Twitter always here, all requests to insert tweets go here
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -95,7 +94,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (type == "background.reloadSettings") {
 
 		init();
-		
 		sendResponse({});
 		
 		// allow async callback of sendResponse()
@@ -104,14 +102,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 
 });
-
-chrome.webRequest.onBeforeRequest.addListener(function(details) {
-	if (details.url.indexOf(URL.YOUTUBE_WATCH) != -1){
-		console.log('chrome.webRequest.onBeforeRequest');
-	}
-},
-{urls: ["<all_urls>"]},
-["requestBody"]);	
 
 chrome.webRequest.onCompleted.addListener(function(details) {
 	
@@ -136,6 +126,13 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 		var qsStart = details.url.indexOf("?");
 		var qs = QueryString.parse(details.url.substring(qsStart + 1));
 		token = qs['v'];
+		
+	} else {
+		
+		console.log("other page: " + details.url);
+//		var el = document.createElement("a");
+//		el.href = details.url;
+//		token = el.hostname;
 		
 	}
 	
