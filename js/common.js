@@ -18,7 +18,7 @@ var Settings = {
 	AUTH_STATE_COMPLETED : 'completed',
 		
 	PROPERTIES : [ 'apiKey', 'apiSecret', 'accessToken', 'accessTokenSecret', 'authState',
-			'embedTheme', 'embedShowMedia', 'embedShowConversation', 'embedIncludeScriptTag' ],
+			'embedShowMedia', 'embedShowConversation', 'embedIncludeScriptTag' ],
 			
 			
 	properties : {},
@@ -216,18 +216,27 @@ var Twitter = {
 
 			var ids = [];
 			
-			async.eachSeries(result.statuses, function(status, done){
+			if (result && result.statuses){
+
+				async.eachSeries(result.statuses, function(status, done){
+					
+					ids.push(status.id_str);
+					done();
+					
+				}, function(err){
+					
+					if (err){
+						console.log(err);
+					} else {
+//						console.log("search results: " + ids);
+						callback(ids);
+					}
+					
+				});				
 				
-				ids.push(status.id_str);
-				
-				done();
-				
-			}, function(err){
-				
-				console.log("search results: " + ids);
-				callback(ids);
-				
-			});
+			} else {
+				console.log("No result: " + result);
+			}
 			
 		});
 		
@@ -237,26 +246,39 @@ var Twitter = {
 		
 		var contentAll = '';
 		
-		async.eachSeries(tweetIds, function(tweetId, done){
-			
-			Twitter.oembedTweet(tweetId, function(content){
+		if (tweetIds){
+		
+			async.eachSeries(tweetIds, function(tweetId, done){
 				
-				if (contentAll){
-					contentAll = contentAll + Twitter.NEWLINE; 
+				Twitter.oembedTweet(tweetId, function(content){
+					
+					if (contentAll){
+						contentAll = contentAll + Twitter.NEWLINE; 
+					}
+					
+					contentAll = contentAll + content;
+					
+					// need to call done() to tell eachSeries we're... done.
+					done();
+					
+				});
+				
+			}, function(err){
+				
+				if (err){
+					console.log(err);
+				} else {
+//					console.log("content results: " + contentAll);
+					callback(contentAll);
 				}
 				
-				contentAll = contentAll + content;
-				
-				// need to call done() to tell eachSeries we're... done.
-				done();
 				
 			});
 			
-		}, function(err){
-			
-			callback(contentAll);
-			
-		});
+		} else {
+			console.log("No tweetIds: " + tweetIds);
+		}
+
 		
 	},
 	
@@ -363,7 +385,6 @@ Settings.DEFAULT = {
 	 'accessToken' : Settings.ACCESS_TOKEN, 
 	 'accessTokenSecret' : Settings.ACCESS_TOKEN_SECRET,
 	 'authState' : Settings.AUTH_STATE_LOGIN, 
-	 'embedTheme' : 'light',
 	 'embedShowMedia' : false,
 	 'embedShowConversation' : false,
 	 'embedIncludeScriptTag' : false

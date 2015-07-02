@@ -12,7 +12,7 @@ if (chrome.runtime.onInstalled) {
 
 };
 
-/*Put page action icon on all tabs*/
+// Put page action icon on all tabs
 chrome.tabs.onUpdated.addListener(function(tabId) {
 	chrome.pageAction.show(tabId);
 });
@@ -21,7 +21,7 @@ chrome.tabs.getSelected(null, function(tab) {
 	chrome.pageAction.show(tab.id);
 });
 
-/*Send request to current tab when page action is clicked*/
+// Send request to current tab when page action is clicked
 chrome.pageAction.onClicked.addListener(function(tab) {
 	chrome.tabs.getSelected(null, function(tab) {
 		chrome.tabs.sendMessage(
@@ -36,8 +36,6 @@ chrome.pageAction.onClicked.addListener(function(tab) {
 
 // Because Twitter always here, all requests to insert tweets go here
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-
-	console.log("background.js: " + JSON.stringify(request));
 
 	var type = request.type;
 
@@ -87,8 +85,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 				
 			}
 			
-
-
         });
 		
 		// allow async callback of sendResponse()
@@ -132,33 +128,35 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 		console.log('showTweets: ('+(new Date()).getTime()+')');
 	}
 	
+	var token = null;
+	
 	if (details.url.indexOf(URL.YOUTUBE_WATCH) != -1){
 
 		console.log('youtube page: ' + details.url);
 		var qsStart = details.url.indexOf("?");
 		var qs = QueryString.parse(details.url.substring(qsStart + 1));
-
-		var token = qs['v'];
-		if (token){
-			
-			token = token + " -liked -filter:retweets lang:en"
-			
-			Twitter.search(token, function(ids){
-			
-				Twitter.oembedTweets(ids, function(content){
-					
-					setTimeout(function(){
-						showTweets(details.tabId, content, null, function(response) { 
-							console.log(response);
-						});
-					}, 3000);
-	
-				});
-			});
-		}
+		token = qs['v'];
 		
 	}
 	
+	if (token){
+		
+		token = token + " -liked -filter:retweets lang:en"
+		
+		Twitter.search(token, function(ids){
+		
+			Twitter.oembedTweets(ids, function(content){
+				
+				setTimeout(function(){
+					showTweets(details.tabId, content, null, function(response) { 
+						console.log(response);
+					});
+				}, 3000);
+
+			});
+		});
+	}
+		
 },
 {urls: ["<all_urls>"]},
 ["responseHeaders"]);	
