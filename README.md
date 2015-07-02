@@ -1,50 +1,9 @@
-TwitterDev Collections Chrome Extension v0.1
+TwitterDev Tweetbar Extension v0.1
 =====
 
-Chrome extension to curate tweets from twitter.com into user-managed collections. These tweets are then easily embedded into a blog post/CMS system with a Twitter button in your Chrome browser. (Embedded tweets use the Twitter oEmbed API.)
+Chrome extension to view tweets while browsing YouTube. 
 
-This tool is made open source by the @TwitterDev team as a reference for how to integrate Twitter + your tools + Chrome browser for an optimal user experience. Other potential uses for this open source extension might include:
-
-- Tweet collection and embedding into custom CMS systems
-- Integrating tweet discovery and curation tools for reporters or storytellers
-- Tweet curation for photo walls or galleries
-
-This extension uses the Twitter Collections API as the back-end storage to save and manage tweets. Tweets managed by other Collections-compatible Twitter clients (including TweetDeck, Curator and twitter.com) can be used to collect and manage tweets for embedding. For access to the Twitter Collections API, please read the Development section below for instructions on how to get access.
-
-Please note that this sample uses Twitter Collections, which requires additional app permissions. If you choose to use this or a derivation for production purposes, contact Twitter directly to enable your app with the Collections Beta permissions. More info about collections and access can be found here: [https://dev.twitter.com/rest/collections/about](https://dev.twitter.com/rest/collections/about) 
-
-Usage
---------
-
-### Curating Tweets
-
-Users can curate tweet into collections directly from twitter.com. This extension extends the Twitter.com user interface to add collections easily from the timeline.
-
-##### Step 1: Click on the "+" icon beneath the tweet
-
-<img src="img/screen/curate_step1a.png" style="width: 70%;"/>
-
-##### Step 2: Choose Collection (or create new one) and save tweet
-
-<img src="img/screen/curate_step2.png" style="width: 70%;"/>
-
-### Embedding Tweets
-
-Users can embed one or more tweets via the Chrome Extension button near the browser's location bar.
-
-##### Step 1: Click on browser button to see Collections/Tweets
-
-<img src="img/screen/embed_step1.png" style="width: 70%;"/>
-
-##### Step 2: Select (Multiple) Tweets to embed
-
-<img src="img/screen/embed_step2.png" style="width: 70%;"/>
-
-### Settings
-
-Embedded Tweets are customizable, allowing for media, threaded conversations, light/dark templates and custom templates.
-
-<img src="img/screen/settings.png" style="width: 70%;"/>
+This tool is made open source by the @TwitterDev team as a reference for how to integrate Twitter + Chrome browser for a unique user experience. 
 
 Installation
 --------
@@ -110,28 +69,8 @@ Dependencies
 The following libraries are used in this extension. All libraries are included
 under the js/lib directory to make this source self-contained. 
 
-- Bootstrap (3.0.3): http://getbootstrap.com/ 
-- JQuery (1.10.1): http://jquery.com/
-- JQuery UI (1.10.4): http://jqueryui.com/
-- Mustache.js: https://github.com/janl/mustache.js 
 - Async: https://github.com/caolan/async
-- Codebird (Modified for Twitter Collections): https://github.com/jublonet/codebird-js
-
-Development
---------
-
-This sample uses Twitter Collections, which requires additional app permissions. This code ships with default auth tokens, so that developers can being developing and testing immediately. 
-
-If you choose to use this or a derivation for production purposes, contact Twitter directly to enable your app with the Collections Beta permissions. More info about collections and access can be found here: [https://dev.twitter.com/rest/collections/about](https://dev.twitter.com/rest/collections/about) 
- 
-Lastly, the common.js file has an ONLINE flag that can be disabled for quick development and  testing without a network connection. Consider using this flag when making iterative UI changes. 
-
-Todo
---------
-
-Upcoming features:
-
-- Implement Custom Macro Template
+- Codebird: https://github.com/jublonet/codebird-js
 
 Support
 --------

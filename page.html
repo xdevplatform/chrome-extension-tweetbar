@@ -27,86 +27,9 @@
 	<!-- Nav tabs -->
 	<ul id="myTab" class="nav nav-tabs" role="tablist">
 	  <li><img src='img/bird.png' class='icon'></li>
-	  <li role="presentation"><a href="#tutorial" role="tab" data-toggle="tab">Tutorial</a></li>
 	  <li role="presentation"><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
 	</ul>
 	
-	<!-- Tab panes -->
-	<div class="tab-content">
-	  
-	  <div role="tabpanel" class="tab-pane" id="tutorial">
-
-	  	<h3>
-	  		Welcome to the TwitterDev Tweetbar!
-	  	</h3>
-	  	<p>
-	  		This tutorial will help you use the tool to curate 
-	  		and embed tweets directly from your Chrome browser.
-	  		<ol>
-	  		 	<li><a href="#tutorial_setup">Setup
-	  		 	<li><a href="#tutorial_curate">Curate tweets
-	  		 	<li><a href="#tutorial_embed">Embed/manage tweets
-  		 	</ol>
-	  	</p>
-	  	
-	  	<a name="tutorial_setup"></a>
-	  	<h4>Setup</h4>
-	  	
-	  	<p>
-	  		To use this tool, you must first connect to your Twitter account. To access the tool's menu, 
-	  		click on the blue bird icon in your browser menu (to the right of the browser location):   
-
-	  		<img src="img/screen/action_icon.png" class="tutorial">
-	  		
-	  		Once the pane is open, go to the <a href="page.html?page=settings" target="_target">settings tab</a> and
-	  		click on the "Login via Twitter" button. This will take you to Twitter to login. 
-
-	  		<img src="img/screen/install_step6.png" class="tutorial">
-	  		
-	  		Authorize access and copy the PIN. Be sure to return to the settings page 
-	  		and complete the flow by submitting your PIN:
-	  		
-	  		<img src="img/screen/install_step8.png" class="tutorial">
-
-	  	</p> 
-
-		<a name="tutorial_curate"></a>
-	  	<h4>Curate Tweets</h4>
-
-	  	<p>
-	  		On each tweet in twitter.com, you will now see a "&plus;" icon below the tweet. 
-
-	  		<img src="img/screen/curate_step1a.png" class="tutorial">
-
-	  		Clicking on the icon will show you collections you can add it to. You can either select multiple
-	  		collections, or choose a single collection by clicking on the name. 
-
-	  		<img src="img/screen/curate_step2.png" class="tutorial">
-
-	  		If you want to create a new collection, click on "Create New Collection". 
-
-	  	</p> 
-
-		<a name="tutorial_embed"></a>
-	  	<h4>Embed/manage Tweets</h4>
-
-	  	<p>
-	  		To view your collections, click on the blue bird icon in your browser menu (to the right of the browser location):
-	  		
-	  		<img src="img/screen/embed_step0.png" class="tutorial">
-	  		
-	  		Click on the collection with the tweets you want to embed. Choose the tweets to embed with the checkboxes to the left.
-	  		
-	  		<img src="img/screen/embed_step1.png" class="tutorial">
-	  		
-	  		Once you have selected the tweets, click on the "Embed" button at the top right. This injects the tweet HTML into
-	  		the cursor of the page. Also, this copies the same tweet HTML into the clipboard, so you can use "Control-V" to paste
-	  		into the page. 
-	  		
-	  	</p> 
-
-	  </div>
-  
 	  <div role="tabpanel" class="tab-pane" id="settings">
 	  
 	  	<h3>
@@ -114,7 +37,7 @@
 	  		<button type="button" id="settings_save" class="btn btn-primary btn-sm pull-right">Save</button>
 	  	</h3>
 	  	<p>
-	  		Enter your settings to connect to Twitter and embed Tweets.
+	  		Enter your settings to connect to Twitter and set Tweet view defaults.
 	  	</p>
 	  	
 	  	
@@ -181,34 +104,6 @@
 			  <div class="panel-body">
 			  
 				  <div class="form-group">
-				    <label for="inputPassword3" class="col-sm-3 control-label">Template</label>
-				    <div class="col-sm-6">
-				  		<select id="embedType" class="form-control">
-				  			<option value="embed">Embed
-				  			<option value="shortcode">Shortcode
-				  			<option value="url">URL
-				  			<option value="custom">Custom Macro
-			  			</select>
-				    </div>
-				  </div>
-				  <div id="embedTemplateSection">
-					  <div class="form-group">
-					    <label for="inputPassword3" class="col-sm-3 control-label"></label>
-					    <div class="col-sm-6">
-					  		<textarea id="embedTemplate"></textarea>
-					    </div>
-					  </div>
-				  </div>
-				  <div class="form-group">
-				    <label for="inputPassword3" class="col-sm-3 control-label">Theme</label>
-				    <div class="col-sm-6">
-				  		<select id="embedTheme" class="form-control">
-				  			<option value="light">Light
-				  			<option value="dark">Dark
-			  			</select>
-				    </div>
-				  </div>
-				  <div class="form-group">
 				    <label for="inputPassword3" class="col-sm-3 control-label">Show Media</label>
 				    <div class="col-sm-6">
 				  		<input id="embedShowMedia" type="checkbox"></input> 
@@ -220,46 +115,10 @@
 				  		<input id="embedShowConversation" type="checkbox"></input> 
 				    </div>
 				  </div>
-				  <div class="form-group">
-				    <label for="inputPassword3" class="col-sm-3 control-label">Add widgets.js Script</label>
-				    <div class="col-sm-6">
-				  		<input id="embedIncludeScriptTag" type="checkbox"></input> 
-				    </div>
-				  </div>
 		  
 			  </div>
 			</div>
 			
-<!--
-	 	  <a href="#" id="advanced_options_toggle" class="pull-right">Show Advanced Options</a>
--->
-			
-	      <div id="advanced_options">
-	      
-	  	  <h4>Advanced Options</h4> 
-		  
-			<div class="panel panel-default">
-			  <div class="panel-body">
-			  
-				  <div class="form-group">
-				    <label for="inputPassword3" class="col-sm-3 control-label">API Key</label>
-				    <div class="col-sm-6">
-				    	<input id="apiKey" type="text" class="form-control"></input>
-				    </div>
-				  </div>
-
-				  <div class="form-group">
-				    <label for="inputPassword3" class="col-sm-3 control-label">API Secret</label>
-				    <div class="col-sm-6">
-				    	<input id="apiSecret" type="text" class="form-control"></input>
-				    </div>
-				  </div>
-		  
-			  </div>
-			</div>
-		  
-		  </div>
-		  
 		</form>
 	  
 	  </div>
