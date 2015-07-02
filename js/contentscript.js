@@ -10,6 +10,19 @@ var Sidebar = {
 	sidebar: null,
 	isOpen: false,
 	
+	CSS_COMMON: "\
+		position:fixed;\
+		top:50px;\
+		right:0px;\
+		width:325px;\
+		height:100%;\
+		padding:8px;\
+		background:white;\
+		border-left: 2px solid #999;\
+		z-index:999999;\
+		overflow:scroll;\
+	",
+	
 	init : function(){
 		
 	},
@@ -22,28 +35,12 @@ var Sidebar = {
 			var sidebar = document.createElement('div');
 			sidebar.id = Sidebar.DOM_ID;
 				
-			sidebar.style.cssText = "\
-				position:fixed;\
-				top:50px;\
-				right:0px;\
-				width:325px;\
-				height:100%;\
-				padding:8px;\
-				background:white;\
-				border-left: 2px solid #999;\
-				z-index:999999;\
-				overflow:scroll;\
-			";
-			
 			Sidebar.sidebar = sidebar;
+			document.body.appendChild(Sidebar.sidebar);
 			
 		}
 		
-		var el = document.getElementById(Sidebar.DOM_ID);
-		if (!el){
-			document.body.appendChild(Sidebar.sidebar);
-		}
-
+		Sidebar.sidebar.style.cssText = Sidebar.CSS_VISIBLE;
 		Sidebar.isOpen = true;
 		
 		return Sidebar.sidebar;
@@ -51,9 +48,8 @@ var Sidebar = {
 	
 	close : function(request) {
 		
-		var el = document.getElementById(Sidebar.DOM_ID);
-		if (el){
-			el.parentNode.removeChild(el);
+		if (Sidebar.sidebar){
+			Sidebar.sidebar.style.cssText = Sidebar.CSS_HIDDEN;
 		}
 		
 		Sidebar.isOpen = false;
@@ -68,6 +64,9 @@ var Sidebar = {
 		}
 	}
 }
+
+Sidebar.CSS_VISIBLE = Sidebar.CSS_COMMON + "display:block;";
+Sidebar.CSS_HIDDEN = Sidebar. CSS_COMMON + "display:none;";
 
 //prevent IFRAMES from loading this listener multiple times.
 if (!window.top.listenerLoaded) {
