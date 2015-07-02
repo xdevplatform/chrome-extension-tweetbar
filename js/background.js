@@ -87,6 +87,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 });
 
+chrome.webRequest.onBeforeRequest.addListener(function(details) {
+	if (details.url.indexOf(URL.YOUTUBE_WATCH) != -1){
+		console.log('chrome.webRequest.onBeforeRequest');
+	}
+},
+{urls: ["<all_urls>"]},
+["requestBody"]);	
+
 chrome.webRequest.onCompleted.addListener(function(details) {
 	
 	function showTweets(tabId, content, targetId, callback){

@@ -6,7 +6,7 @@
 
 var Sidebar = {
 		
-	isOpen: false,
+	DOM_ID: "my_sidebar",
 	sidebar: null,
 	
 	init : function(){
@@ -17,7 +17,7 @@ var Sidebar = {
 			
 		// create new sidebar
 		var sidebar = document.createElement('div');
-		sidebar.id = "mySidebar";
+		sidebar.id = Sidebar.DOM_ID;
 		document.body.appendChild(sidebar);
 			
 		sidebar.style.cssText = "\
@@ -41,13 +41,13 @@ var Sidebar = {
 	},
 	
 	close : function(request) {
-		var el = document.getElementById('mySidebar');
+		var el = document.getElementById(Sidebar.DOM_ID);
 		el.parentNode.removeChild(el);
-		this.isOpen = false;
+		this.sidebar = null;
 	},
 	
 	toggle : function(request) {
-		if (this.isOpen) {
+		if (this.sidebar) {
 			this.close(request);
 		} else {
 			this.open(request);
@@ -69,10 +69,9 @@ if (!window.top.listenerLoaded) {
 		console.log('onMessage: ' + request.action)
 		
 		if (request.action == "showTweets") {
+
 			var tweets = request.content; 
-			
-//			var html = tweets + Twitter.SCRIPT_TAG;
-			var html = tweets + Twitter.SCRIPT_TAG2;
+			var html = tweets + Twitter.SCRIPT_TAG;
 			
 			var sidebar = Sidebar.open(request);
 			console.log(sidebar);

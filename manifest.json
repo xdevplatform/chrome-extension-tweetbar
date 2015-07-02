@@ -39,7 +39,7 @@
     {
       "matches": ["*://*/*"],
       "all_frames": true,
-      "run_at": "document_start", 
+      "run_at": "document_end", 
       "js": [
       	"js/lib/jquery-1.10.1.min.js",
 	    "js/lib/async.js",
