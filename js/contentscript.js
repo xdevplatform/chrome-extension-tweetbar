@@ -21,14 +21,16 @@ var Sidebar = {
 		document.body.appendChild(sidebar);
 			
 		sidebar.style.cssText = "\
-//			position:fixed;\
+			position:fixed;\
 			top:50px;\
 			right:0px;\
 			width:30%;\
 			height:100%;\
 			padding:8px;\
 			background:white;\
+			border-left: 2px solid #999;\
 			z-index:999999;\
+			overflow:scroll;\
 		";
 		
 		// use existing sidebar
