@@ -45,18 +45,8 @@ var Page = {
 			SettingsPage.setState(isAuthenticated, false);
 		}
 
-		var page = QueryString.get("page", "collections");
-		if ((Settings.ONLINE && !isAuthenticated) || page == 'settings') {
-			SettingsPage.showTab();
-		} else if (page == 'tutorial'){
-			TutorialPage.showTab();
-		} else if (page == 'save'){
-			CollectionsPage.showTab();
-			CollectionsPage.showSaveTweet();
-		} else /* if (page == 'collections') */ {
-			CollectionsPage.showTab();
-			CollectionsPage.showCollections();
-		}
+		SettingsPage.showTab();
+
 	},
 
 	setStatus : function(text) {
@@ -86,20 +76,7 @@ var SettingsPage = {
 		
 		$("#advanced_options").hide();
 
-		SettingsPage.load(function() {
-
-			$('#embedType').change(function(e) {
-				// alert($('#embedType').val());
-				if ($('#embedType').val() == 'custom') {
-					$("#embedTemplateSection").fadeIn();
-				} else {
-					$("#embedTemplateSection").hide();
-				}
-				return false;
-			});
-
-			$('#embedType').change();
-		});
+		SettingsPage.load(function() {});
 
 		$(document).on('click', '#settings_save', function(e) {
 			SettingsPage.save();
