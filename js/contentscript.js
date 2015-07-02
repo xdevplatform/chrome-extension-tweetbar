@@ -8,6 +8,7 @@ var Sidebar = {
 		
 	DOM_ID: "my_sidebar",
 	sidebar: null,
+	isOpen: false,
 	
 	init : function(){
 		
@@ -15,39 +16,52 @@ var Sidebar = {
 		
 	open : function(request) {
 			
-		// create new sidebar
-		var sidebar = document.createElement('div');
-		sidebar.id = Sidebar.DOM_ID;
-		document.body.appendChild(sidebar);
+		if (!Sidebar.sidebar){
+
+			// create new sidebar
+			var sidebar = document.createElement('div');
+			sidebar.id = Sidebar.DOM_ID;
+				
+			sidebar.style.cssText = "\
+				position:fixed;\
+				top:50px;\
+				right:0px;\
+				width:325px;\
+				height:100%;\
+				padding:8px;\
+				background:white;\
+				border-left: 2px solid #999;\
+				z-index:999999;\
+				overflow:scroll;\
+			";
 			
-		sidebar.style.cssText = "\
-			position:fixed;\
-			top:50px;\
-			right:0px;\
-			width:30%;\
-			height:100%;\
-			padding:8px;\
-			background:white;\
-			border-left: 2px solid #999;\
-			z-index:999999;\
-			overflow:scroll;\
-		";
+			Sidebar.sidebar = sidebar;
+			
+		}
 		
-		// use existing sidebar
-//		sidebar = document.getElementById('watch7-sidebar');
-//		console.log("sidebar: " + sidebar)
-			
-		return sidebar;
+		var el = document.getElementById(Sidebar.DOM_ID);
+		if (!el){
+			document.body.appendChild(Sidebar.sidebar);
+		}
+
+		Sidebar.isOpen = true;
+		
+		return Sidebar.sidebar;
 	},
 	
 	close : function(request) {
+		
 		var el = document.getElementById(Sidebar.DOM_ID);
-		el.parentNode.removeChild(el);
-		this.sidebar = null;
+		if (el){
+			el.parentNode.removeChild(el);
+		}
+		
+		Sidebar.isOpen = false;
+		
 	},
 	
 	toggle : function(request) {
-		if (this.sidebar) {
+		if (Sidebar.isOpen) {
 			this.close(request);
 		} else {
 			this.open(request);
@@ -74,10 +88,13 @@ if (!window.top.listenerLoaded) {
 			var html = tweets + Twitter.SCRIPT_TAG;
 			
 			var sidebar = Sidebar.open(request);
-			console.log(sidebar);
-			
 			sidebar.innerHTML = html;
-			console.log(html);
+
+		}
+		
+		if (request.action == "toggleSidebar") {
+
+			Sidebar.toggle(request);
 
 		}
 	});

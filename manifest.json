@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "TwitterDev Tweetbar v0.0.2",
-  "description": "Chrome extension to show relevant tweets while browsing the we",
-  "version": "0.0.2",
+  "name": "TwitterDev Tweetbar v0.0.1",
+  "description": "Chrome extension to show relevant tweets while browsing YouTube",
+  "version": "0.0.1",
   "options_page": "page.html?page=settings",
 
   "permissions": [
@@ -14,13 +14,9 @@
   ],
 
 	"page_action": {
-		"default_icon": "img/icon.png",
+		"default_icon": "img/bird.png",
 		"default_title": "Tweetbar"
 	},
-
-  "icons": { "16": "img/bird.png",
-             "48": "img/bird.png",
-             "128": "img/bird.png" },
 
   "background": {
   	"scripts": [

@@ -12,6 +12,28 @@ if (chrome.runtime.onInstalled) {
 
 };
 
+/*Put page action icon on all tabs*/
+chrome.tabs.onUpdated.addListener(function(tabId) {
+	chrome.pageAction.show(tabId);
+});
+
+chrome.tabs.getSelected(null, function(tab) {
+	chrome.pageAction.show(tab.id);
+});
+
+/*Send request to current tab when page action is clicked*/
+chrome.pageAction.onClicked.addListener(function(tab) {
+	chrome.tabs.getSelected(null, function(tab) {
+		chrome.tabs.sendMessage(
+			tab.id,
+			{action: "toggleSidebar"}, 
+			function(response) {
+				console.log(response);
+			}
+		);
+	});
+});
+
 // Because Twitter always here, all requests to insert tweets go here
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
@@ -118,6 +140,9 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 
 		var token = qs['v'];
 		if (token){
+			
+			token = token + " -liked -filter:retweets lang:en"
+			
 			Twitter.search(token, function(ids){
 			
 				Twitter.oembedTweets(ids, function(content){
