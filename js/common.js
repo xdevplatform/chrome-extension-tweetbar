@@ -18,8 +18,8 @@ var Settings = {
 	AUTH_STATE_COMPLETED : 'completed',
 		
 	PROPERTIES : [ 'apiKey', 'apiSecret', 'accessToken', 'accessTokenSecret', 'authState',
-			'embedType', 'embedTemplate', 'embedTheme', 'embedShowMedia',
-			'embedShowConversation', 'embedIncludeScriptTag' ],
+			'embedTheme', 'embedShowMedia', 'embedShowConversation', 'embedIncludeScriptTag' ],
+			
 			
 	properties : {},
 			
@@ -254,10 +254,6 @@ var Twitter = {
 			
 		}, function(err){
 			
-//			if (Settings.properties.embedIncludeScriptTag){
-//				contentAll = contentAll + Twitter.NEWLINE + Twitter.SCRIPT_TAG;
-//			}
-			
 			callback(contentAll);
 			
 		});
@@ -276,64 +272,17 @@ var Twitter = {
 			omit_script : "true"
 		}
 
-//		console.log("oembedTweet: " + JSON.stringify(params));
-		
 		Twitter.call("statuses_oembed", params, function(result) {
 
-			var content = null;
-
-			var embedType = Settings.properties.embedType;
-			if (embedType == "embed") {
-				content = result.html;
-			} else if (embedType == "url") {
-				content = result.url;
-			} else if (embedType == "shortcode") {
-				content = "[tweet " + result.url + " hide_media='"+hide_media+"' hide_thread='"+hide_thread+"']";
-			} else if (embedType == "custom") {
-				content = JSON.stringify(result);
-				var embedTemplate = Settings.properties.embedTemplate;
-				if (embedTemplate) {
-					// alert(embedTemplate);
-				}
-			}
-
+			var content = result.html;
 			if (callback){
-				
 				callback(content);
-				
 			}
 			
 		});
 
 	},
 	
-	// http://stackoverflow.com/questions/6549223/javascript-code-to-display-twitter-created-at-as-xxxx-ago
-	parseTwitterDate : function(tdate) {
-		
-	    var system_date = new Date(Date.parse(tdate));
-	    var user_date = new Date();
-//	    if (K.ie) {
-//	        system_date = Date.parse(tdate.replace(/( \+)/, ' UTC$1'))
-//	    }
-	    var diff = Math.floor((user_date - system_date) / 1000);
-	    if (diff <= 1) {return "just now";}
-	    if (diff < 20) {return diff + " seconds ago";}
-	    if (diff < 40) {return "half a minute ago";}
-	    if (diff < 60) {return "less than a minute ago";}
-	    if (diff <= 90) {return "one minute ago";}
-	    if (diff <= 3540) {return Math.round(diff / 60) + " minutes ago";}
-	    if (diff <= 5400) {return "1 hour ago";}
-	    if (diff <= 86400) {return Math.round(diff / 3600) + " hours ago";}
-	    if (diff <= 129600) {return "1 day ago";}
-	    if (diff < 604800) {return Math.round(diff / 86400) + " days ago";}
-	    if (diff <= 777600) {return "1 week ago";}
-	    
-	    system_date = Twitter.MONTH_ARRAY[system_date.getMonth()] + " " + system_date.getDate();
-	    return " " + system_date;
-	},
-	
-    MONTH_ARRAY : new Array("Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec")
-
 }
 
 var URL = {
@@ -414,9 +363,8 @@ Settings.DEFAULT = {
 	 'accessToken' : Settings.ACCESS_TOKEN, 
 	 'accessTokenSecret' : Settings.ACCESS_TOKEN_SECRET,
 	 'authState' : Settings.AUTH_STATE_LOGIN, 
-	 'embedType' : 'embed',
 	 'embedTheme' : 'light',
 	 'embedShowMedia' : false,
 	 'embedShowConversation' : false,
-	 'embedIncludeScriptTag' : true
+	 'embedIncludeScriptTag' : false
 }
