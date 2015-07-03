@@ -119,25 +119,26 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 	}
 	
 	var token = null;
-	
+
+
 	if (details.url.indexOf(URL.YOUTUBE_WATCH) != -1){
 
-		console.log('youtube page: ' + details.url);
 		var qsStart = details.url.indexOf("?");
 		var qs = QueryString.parse(details.url.substring(qsStart + 1));
 		token = qs['v'];
-		
-	} else {
-		
-		console.log("other page: " + details.url);
-//		var el = document.createElement("a");
-//		el.href = details.url;
-//		token = el.hostname;
+
+	} else if (details.type == 'main_frame'){
+
+		var el = document.createElement("a");
+		el.href = details.url;
+		token = el.hostname;
 		
 	}
-	
+
 	if (token){
-		
+
+		console.log('search token: ' + token + " (" + details.url + ")");
+
 		token = token + " -liked -filter:retweets lang:en"
 		
 		Twitter.search(token, function(ids){
