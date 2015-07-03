@@ -12,14 +12,14 @@ var Sidebar = {
 	
 	CSS_COMMON: "\
 		position:fixed;\
-		top:50px;\
+		top:0px;\
 		right:0px;\
 		width:325px;\
 		height:100%;\
 		padding:8px;\
 		background:white;\
 		border-left: 2px solid #999;\
-		z-index:999999;\
+		z-index:9999999999;\
 		overflow:scroll;\
 	",
 	
